@@ -15,29 +15,26 @@ import java.util.Date;
 @ToString
 @Data
 @Entity
-@Table(name = "reservation")
+@Table(name="reservation")
 public class Reservation implements Serializable {
-
-    @Id
+    @Id//clave primaria (pk)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
-
     private Date startDate;
     private Date devolutionDate;
     private String status = "created";
 
     @ManyToOne
-    @JoinColumn(name = "idCar")
-    @JsonIgnoreProperties("reservartion")
+    @JoinColumn(name="idCar") //foreing key
+    @JsonIgnoreProperties("reservations")
     private Car car;
 
     @ManyToOne
-    @JoinColumn(name = "idClient")
-    @JsonIgnoreProperties({"reservartion", "messages"})
+    @JoinColumn(name="idClient") //foreing key
+    @JsonIgnoreProperties({"reservations","messages"})
     private Client client;
 
-    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "reservation")
-    @JsonIgnoreProperties("reservartion")
+    @OneToOne(cascade = {CascadeType.PERSIST},mappedBy = "reservation")
+    @JsonIgnoreProperties("reservation")
     private Score score;
-
 }

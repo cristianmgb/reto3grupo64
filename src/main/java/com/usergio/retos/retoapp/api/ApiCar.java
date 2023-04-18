@@ -26,4 +26,16 @@ public class ApiCar {
         service.save(car);
         return ResponseEntity.status(201).build();
     }
+
+    @PutMapping("/update")
+    public ResponseEntity updateCar(@RequestBody Car car){
+        service.updateCar(car);
+        return ResponseEntity.status(201).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCar(@PathVariable Long id){
+        service.deleteCar(id);
+        return ResponseEntity.status(204).build();
+    }
 }

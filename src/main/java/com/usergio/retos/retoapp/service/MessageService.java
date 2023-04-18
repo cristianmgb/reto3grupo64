@@ -11,14 +11,14 @@ import java.util.List;
 public class MessageService {
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageRepository repository;
 
     public List<Messages> getAll() {
-        return messageRepository.findAll();
+        return repository.findAll();
     }
 
     public Messages save(Messages messages) {
-        return messageRepository.save(messages);
+        return repository.save(messages);
     }
 
 }

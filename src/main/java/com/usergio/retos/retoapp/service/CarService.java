@@ -33,7 +33,6 @@ public class CarService {
             carUpdate.get().setBrand(car.getBrand());
             carUpdate.get().setYear(car.getYear());
             carUpdate.get().setDescription(car.getDescription());
-            carUpdate.get().setGama(car.getGama());
             return repository.save(carUpdate.get());
         } else {
             return car;

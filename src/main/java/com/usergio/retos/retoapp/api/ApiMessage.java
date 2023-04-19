@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/Message")
@@ -21,9 +22,26 @@ public class ApiMessage {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Optional<Messages> getMessage(@PathVariable Long id){
+        return service.getFindById(id);
+    }
+
     @PostMapping("/save")
     public ResponseEntity save(@RequestBody Messages messages) {
         service.save(messages);
+        return ResponseEntity.status(201).build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity update (@RequestBody Messages messages){
+        service.updateMessage(messages);
+        return ResponseEntity.status(201).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete (@PathVariable Long id){
+        service.deleteMessage(id);
         return ResponseEntity.status(201).build();
     }
 }

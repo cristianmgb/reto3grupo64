@@ -22,7 +22,7 @@ public class Car implements Serializable {
     private Long idCar;
     private String name;
     private String brand;
-    private String year;
+    private Integer year;
     private String description;
 
     @ManyToOne

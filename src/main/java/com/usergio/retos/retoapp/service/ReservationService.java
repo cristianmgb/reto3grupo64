@@ -1,13 +1,16 @@
 package com.usergio.retos.retoapp.service;
 
+import com.usergio.retos.retoapp.custom.CountClient;
+import com.usergio.retos.retoapp.custom.StatusAmount;
+import com.usergio.retos.retoapp.modelo.entidad.Client;
 import com.usergio.retos.retoapp.modelo.entidad.Reservation;
 import com.usergio.retos.retoapp.modelo.repositorio.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -43,5 +46,41 @@ public class ReservationService {
 
     public void deleteReservation(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<Reservation> getReservationPeriod(String dateA, String dateB) {
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+        Date a = new Date();
+        Date b = new Date();
+        try {
+            a = parser.parse(dateA);
+            b = parser.parse(dateB);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (a.before(b)) {
+            return repository.findAllByStartDateAfterAndStartDateBefore(a, b);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public StatusAmount getReservationByStatusReport() {
+        List<Reservation> completed = repository.findAllByStatus("completed");
+        List<Reservation> cancelled = repository.findAllByStatus("cancelled");
+        //return new StatusAmount(completed.size(), cancelled.size());
+        return StatusAmount.builder()
+                .completed(completed.size())
+                .cancelled(cancelled.size())
+                .build();
+    }
+
+    public List<CountClient> getTopClient() {
+        List<CountClient> res = new ArrayList<>();
+        List<Object[]> report = repository.countTotalReservationByClient();
+        for (int i = 0; i < report.size(); i++) {
+            res.add(new CountClient((Long) report.get(i)[1], (Client) report.get(i)[0]));
+        }
+        return res;
     }
 }
